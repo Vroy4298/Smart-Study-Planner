@@ -1,4 +1,3 @@
-
 const subjectInput = document.getElementById("subject");
 const hoursInput = document.getElementById("hours");
 const priorityInput = document.getElementById("priority");
@@ -8,29 +7,30 @@ const totalHoursEl = document.getElementById("totalHours");
 const completedPercentEl = document.getElementById("completedPercent");
 const progressEl = document.getElementById("progress");
 const toast = document.getElementById("toast");
+const dateEl = document.getElementById("date");
+
+dateEl.textContent = new Date().toDateString();
+
 
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-
 
 addTaskBtn.addEventListener("click", () => {
     if (!subjectInput.value || !hoursInput.value) return;
 
-    const task = {
+    tasks.push({
         id: Date.now(),
         subject: subjectInput.value,
         hours: Number(hoursInput.value),
         priority: priorityInput.value,
         completed: false
-    };
-
-    tasks.push(task);
-    updateApp();
-    showToast("Task added");
+    });
 
     subjectInput.value = "";
     hoursInput.value = "";
-});
 
+    updateApp();
+    showToast("Task added");
+});
 
 function updateApp() {
     localStorage.setItem("tasks", JSON.stringify(tasks));
@@ -55,45 +55,37 @@ function renderTasks() {
                 <button onclick="deleteTask(${task.id})">✕</button>
             </div>
         `;
-
         taskList.appendChild(div);
     });
 }
 
-
 function toggleComplete(id) {
-    tasks = tasks.map(task =>
-        task.id === id ? { ...task, completed: !task.completed } : task
+    tasks = tasks.map(t =>
+        t.id === id ? { ...t, completed: !t.completed } : t
     );
     updateApp();
 }
 
-
 function deleteTask(id) {
-    tasks = tasks.filter(task => task.id !== id);
+    tasks = tasks.filter(t => t.id !== id);
     updateApp();
     showToast("Task deleted");
 }
 
 function updateStats() {
-    const totalHours = tasks.reduce((sum, t) => sum + t.hours, 0);
-    const completedCount = tasks.filter(t => t.completed).length;
-    const percent = tasks.length ? Math.round((completedCount / tasks.length) * 100) : 0;
+    const total = tasks.reduce((s, t) => s + t.hours, 0);
+    const done = tasks.filter(t => t.completed).length;
+    const percent = tasks.length ? Math.round((done / tasks.length) * 100) : 0;
 
-    totalHoursEl.textContent = totalHours;
+    totalHoursEl.textContent = total;
     completedPercentEl.textContent = percent + "%";
     progressEl.style.width = percent + "%";
 }
 
-
-function showToast(message) {
-    toast.textContent = message;
+function showToast(msg) {
+    toast.textContent = msg;
     toast.style.opacity = 1;
-
-    setTimeout(() => {
-        toast.style.opacity = 0;
-    }, 2000);
+    setTimeout(() => toast.style.opacity = 0, 2000);
 }
-
 
 updateApp();
