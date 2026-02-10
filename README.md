@@ -14,7 +14,6 @@ A simple and intuitive **study planning web app** to help students organize stud
 ✔️ Simple responsive UI (HTML, CSS, JavaScript)  
 ✔️ Save and retrieve planner data locally (if implemented)
 
-> ⚙️ This project is ideal for students or developers learning web fundamentals like DOM manipulation and event-driven JavaScript.
 
 ---
 
