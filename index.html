@@ -1,64 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>StudySync</title>
-
-
+    <meta charset="UTF-8">
+    <title>StudySync – Smart Study Planner</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-
-    <div class="brand">
+<nav class="navbar">
     <h1>📘 StudySync</h1>
-    <small>Smart Study Planner</small>
-   </div>
+    <div class="nav-links">
+        <a href="index.html">Dashboard</a>
+        <a href="schedule.html">Schedule</a>
+        <a href="stats.html">Statistics</a>
+    </div>
+</nav>
 
+<main class="dashboard">
 
+    <section class="panel left-panel">
+        <h2>Add Task</h2>
 
-    <main class="dashboard">
+        <input id="subject" type="text" placeholder="Subject">
+        <input id="hours" type="number" placeholder="Hours">
+        <select id="priority">
+            <option>High</option>
+            <option>Medium</option>
+            <option>Low</option>
+        </select>
 
-  
-        <section class="panel left-panel">
-            <h2>Add Study Task</h2>
+        <button id="addTask">Add Task</button>
 
-            <input type="text" id="subject" placeholder="Subject name" />
-            <input type="number" id="hours" placeholder="Daily hours" min="1" />
-
-            <select id="priority">
-                <option value="High">High Priority</option>
-                <option value="Medium">Medium Priority</option>
-                <option value="Low">Low Priority</option>
-            </select>
-
-            <button id="addTask">Add Task</button>
-
-            <div class="overview">
-                <h3>Overview</h3>
-                <p>Total Hours: <strong id="totalHours">0</strong></p>
-                <p>Completed: <strong id="completedPercent">0%</strong></p>
-
-                <div class="progress-bar">
-                    <div class="progress" id="progress"></div>
-                </div>
+        <div class="overview">
+            <h3>Overview</h3>
+            <p>Total Hours: <strong id="totalHours">0</strong></p>
+            <p>Completed: <strong id="completedPercent">0%</strong></p>
+            <div class="progress-bar">
+                <div id="progress" class="progress"></div>
             </div>
-        </section>
+        </div>
+    </section>
 
+    <section class="panel right-panel">
+        <h2>Today’s Plan</h2>
+        <div id="taskList"></div>
+    </section>
 
-        <section class="panel right-panel">
-            <h2>Today’s Plan</h2>
-            <div id="taskList"></div>
-        </section>
+</main>
 
-    </main>
+<div id="toast"></div>
 
-
-    <div id="toast"></div>
-
-    <script src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>

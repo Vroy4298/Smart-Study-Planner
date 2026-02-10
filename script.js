@@ -7,14 +7,10 @@ const totalHoursEl = document.getElementById("totalHours");
 const completedPercentEl = document.getElementById("completedPercent");
 const progressEl = document.getElementById("progress");
 const toast = document.getElementById("toast");
-const dateEl = document.getElementById("date");
-
-dateEl.textContent = new Date().toDateString();
-
 
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
-addTaskBtn.addEventListener("click", () => {
+addTaskBtn.onclick = () => {
     if (!subjectInput.value || !hoursInput.value) return;
 
     tasks.push({
@@ -28,55 +24,50 @@ addTaskBtn.addEventListener("click", () => {
     subjectInput.value = "";
     hoursInput.value = "";
 
-    updateApp();
+    update();
     showToast("Task added");
-});
+};
 
-function updateApp() {
+function update() {
     localStorage.setItem("tasks", JSON.stringify(tasks));
-    renderTasks();
-    updateStats();
+    render();
+    stats();
 }
 
-function renderTasks() {
+function render() {
     taskList.innerHTML = "";
-
-    tasks.forEach(task => {
-        const div = document.createElement("div");
-        div.className = `task ${task.completed ? "completed" : ""}`;
-
-        div.innerHTML = `
-            <div class="task-info">
-                <strong>${task.subject}</strong><br>
-                ${task.hours} hrs • ${task.priority}
+    tasks.forEach(t => {
+        const d = document.createElement("div");
+        d.className = "task" + (t.completed ? " completed" : "");
+        d.innerHTML = `
+            <div>
+                <strong>${t.subject}</strong><br>
+                ${t.hours} hrs • ${t.priority}
             </div>
             <div class="task-actions">
-                <button onclick="toggleComplete(${task.id})">✓</button>
-                <button onclick="deleteTask(${task.id})">✕</button>
+                <button onclick="toggle(${t.id})">✓</button>
+                <button onclick="remove(${t.id})">✕</button>
             </div>
         `;
-        taskList.appendChild(div);
+        taskList.appendChild(d);
     });
 }
 
-function toggleComplete(id) {
-    tasks = tasks.map(t =>
-        t.id === id ? { ...t, completed: !t.completed } : t
-    );
-    updateApp();
+function toggle(id) {
+    tasks = tasks.map(t => t.id === id ? { ...t, completed: !t.completed } : t);
+    update();
 }
 
-function deleteTask(id) {
+function remove(id) {
     tasks = tasks.filter(t => t.id !== id);
-    updateApp();
-    showToast("Task deleted");
+    update();
+    showToast("Task removed");
 }
 
-function updateStats() {
+function stats() {
     const total = tasks.reduce((s, t) => s + t.hours, 0);
     const done = tasks.filter(t => t.completed).length;
     const percent = tasks.length ? Math.round((done / tasks.length) * 100) : 0;
-
     totalHoursEl.textContent = total;
     completedPercentEl.textContent = percent + "%";
     progressEl.style.width = percent + "%";
@@ -88,4 +79,4 @@ function showToast(msg) {
     setTimeout(() => toast.style.opacity = 0, 2000);
 }
 
-updateApp();
+update();
